@@ -28,12 +28,13 @@ namespace arachnisharp
 				this.Token = token;
 
 			if (initiateInstance) {
-				MessagePackObjectDictionary resp = this.ExecuteCommand ("dispatcher.dispatch", new object[] { Guid.NewGuid ().ToString () }).AsDictionary ();
+				this.InstanceName = Guid.NewGuid ().ToString ();
+				MessagePackObjectDictionary resp = this.ExecuteCommand ("dispatcher.dispatch", new object[] { this.InstanceName }).AsDictionary ();
 
 				string[] url = resp ["url"].AsString ().Split (':');
+
 				this.InstanceHost = url [0];
 				this.InstancePort = int.Parse (url [1]);
-
 				this.Token = resp ["token"].AsString ();
 
 				GetInstanceStream ();
@@ -45,16 +46,12 @@ namespace arachnisharp
 		}
 
 		public string Host { get; set; }
-
 		public int Port { get; set; }
-
 		public string Token { get; set; }
-
 		public bool IsInstanceStream { get; set; }
-
 		public string InstanceHost { get; set; }
-
 		public int InstancePort { get; set; }
+		public string InstanceName { get; set; }
 
 		public MessagePackObject ExecuteCommand (string command, object[] args, string token = null)
 		{

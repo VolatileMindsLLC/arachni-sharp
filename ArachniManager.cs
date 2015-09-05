@@ -27,11 +27,6 @@ namespace arachnisharp
 			return _session.ExecuteCommand ("service.scan", new object[]{ args }, _session.Token);
 		}
 
-		public MessagePackObject GetResults ()
-		{
-			return _session.ExecuteCommand ("service.report", new object[]{ }, _session.Token);
-		}
-
 		public MessagePackObject GetProgress(List<uint> digests = null) {
 			Dictionary<string, object> args = new Dictionary<string, object> ();
 			args ["with"] = "issues";

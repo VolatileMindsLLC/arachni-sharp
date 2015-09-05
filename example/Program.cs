@@ -12,7 +12,8 @@ namespace example
 		{
 			using (ArachniSession session = new ArachniSession ("192.168.2.207", 4567, true)) {
 				using (ArachniManager manager = new ArachniManager (session)) {
-					manager.StartScan ("http://192.168.2.87/cgi-bin/badstore.cgi?searchquery=fdsa&action=search&x=20&y=12");
+					Console.WriteLine ("Using instance: " + session.InstanceName);
+					manager.StartScan ("http://demo.testfire.net/default.aspx");
 
 					bool isRunning = manager.IsBusy ().AsBoolean ();
 					List<uint> issues = new List<uint> ();
