@@ -32,6 +32,16 @@ namespace arachnisharp
 			return _session.ExecuteCommand ("service.report", new object[]{ }, _session.Token);
 		}
 
+		public MessagePackObject GetProgress(List<uint> digests = null) {
+			Dictionary<string, object> args = new Dictionary<string, object> ();
+			args ["with"] = "issues";
+			if (digests != null) {
+				args ["without"] = new Dictionary<string, object> ();
+				((Dictionary<string, object>)args ["without"]) ["issues"] = digests.ToArray();
+			}
+			return _session.ExecuteCommand ("service.progress", new object[] { args }, _session.Token);
+		}
+
 		public MessagePackObject IsBusy ()
 		{
 			return _session.ExecuteCommand ("service.busy?", new object[]{ }, _session.Token);

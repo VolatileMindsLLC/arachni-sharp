@@ -80,7 +80,6 @@ namespace arachnisharp
 			_stream.Write (packedLength);
 			_stream.Write (packed);
 
-
 			byte[] respBytes = ReadMessage (_stream);
 
 			MessagePackObjectDictionary resp = null;
@@ -94,23 +93,13 @@ namespace arachnisharp
 			return resp.ContainsKey ("obj") ? resp ["obj"] : resp ["exception"];
 		}
 
-		public static void CopyStream (System.IO.Stream input, System.IO.Stream output)
-		{
-			byte[] buffer = new byte[2000];
-			int len;
-			while ((len = input.Read (buffer, 0, 2000)) > 0)
-				output.Write (buffer, 0, len);
-			output.Flush ();
-		}
-
 		public byte[] DecompressData (byte[] inData)
 		{
-			using (MemoryStream outMemoryStream = new MemoryStream ())
-			using (ZOutputStream outZStream = new ZOutputStream (outMemoryStream))
-			using (Stream inMemoryStream = new MemoryStream (inData)) {
-				CopyStream (inMemoryStream, outZStream);
-				outZStream.finish ();
-				return outMemoryStream.ToArray ();
+			using (MemoryStream outMemoryStream = new MemoryStream ()) {
+				using (ZOutputStream outZStream = new ZOutputStream (outMemoryStream)){
+					outZStream.Write (inData, 0, inData.Length);
+					return outMemoryStream.ToArray ();
+				}
 			}
 		}
 
@@ -122,7 +111,7 @@ namespace arachnisharp
 			if (BitConverter.IsLittleEndian)
 				Array.Reverse (sizeBytes);
 
-			int size = BitConverter.ToInt32 (sizeBytes, 0);
+			uint size = BitConverter.ToUInt32 (sizeBytes, 0);
 
 			byte[] buffer = new byte[size];
 			sslStream.Read (buffer, 0, buffer.Length);
@@ -157,7 +146,7 @@ namespace arachnisharp
 
 		public void Dispose ()
 		{
-			if (this.IsInstanceStream)
+			if (this.IsInstanceStream && _stream != null)
 				this.ExecuteCommand ("service.shutdown", new object[] { }, this.Token);
 			
 			_stream = null;

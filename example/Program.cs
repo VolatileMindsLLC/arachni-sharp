@@ -2,6 +2,7 @@
 using arachnisharp;
 using MsgPack;
 using System.Threading;
+using System.Collections.Generic;
 
 namespace example
 {
@@ -13,18 +14,23 @@ namespace example
 				using (ArachniManager manager = new ArachniManager (session)) {
 					var blah = manager.IsBusy ();
 
-					var resp = manager.StartScan ("http://192.168.2.87/?searchquery=fdsa&action=search&x=11&y=15");
+					var resp = manager.StartScan ("http://192.168.2.87/cgi-bin/badstore.cgi?searchquery=fdsa&action=search&x=20&y=12");
 
 					Console.WriteLine ("Running");
 
-					while (!manager.IsBusy ().IsNil ) {
+					bool isRunning = manager.IsBusy ().AsBoolean ();
+					List<uint> issues = new List<uint> ();
+					while (isRunning) {
+						var progress = manager.GetProgress (issues);
+						foreach (MessagePackObject p in progress.AsDictionary()["issues"].AsEnumerable()) {
+							MessagePackObjectDictionary dict = p.AsDictionary ();
+							Console.WriteLine ("Issue found: " + dict ["name"].AsString ());
+							issues.Add (dict ["digest"].AsUInt32());
+						}
 						Thread.Sleep (10000);
-						Console.Write (".");
-					}
+						isRunning = manager.IsBusy ().AsBoolean ();
 
-					var trewq = manager.GetResults ();
-					foreach (var pair in trewq.AsDictionary())
-						Console.WriteLine (pair.Key + ": " + pair.Value);
+					}
 
 					Console.WriteLine ("done");
 				}
