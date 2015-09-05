@@ -14,8 +14,6 @@ namespace example
 				using (ArachniManager manager = new ArachniManager (session)) {
 					manager.StartScan ("http://192.168.2.87/cgi-bin/badstore.cgi?searchquery=fdsa&action=search&x=20&y=12");
 
-					Console.WriteLine ("Running");
-
 					bool isRunning = manager.IsBusy ().AsBoolean ();
 					List<uint> issues = new List<uint> ();
 					DateTime start = DateTime.Now;
