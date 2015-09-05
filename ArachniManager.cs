@@ -7,6 +7,7 @@ namespace arachnisharp
 	public class ArachniManager : IDisposable
 	{
 		ArachniSession _session;
+
 		public ArachniManager (ArachniSession session)
 		{
 			if (!session.IsInstanceStream)
@@ -15,26 +16,30 @@ namespace arachnisharp
 			_session = session;
 		}
 
-		public MessagePackObject StartScan(string url, string checks = "*"){
+		public MessagePackObject StartScan (string url, string checks = "*")
+		{
 			Dictionary<string, object> args = new Dictionary<string, object> ();
 			args ["url"] = url;
 			args ["checks"] = checks;
 			args ["audit"] = new Dictionary<string, object> ();
-			((Dictionary<string, object>)args ["audit"])["elements"] = new object[] { "links", "forms" };
+			((Dictionary<string, object>)args ["audit"]) ["elements"] = new object[] { "links", "forms" };
 
 			return _session.ExecuteCommand ("service.scan", new object[]{ args }, _session.Token);
 		}
 
-		public MessagePackObject GetResults() {
+		public MessagePackObject GetResults ()
+		{
 			return _session.ExecuteCommand ("service.report", new object[]{ }, _session.Token);
 		}
 
-		public MessagePackObject IsBusy(){
+		public MessagePackObject IsBusy ()
+		{
 			return _session.ExecuteCommand ("service.busy?", new object[]{ }, _session.Token);
 		}
 
-		public void Dispose(){
-			_session.Dispose();
+		public void Dispose ()
+		{
+			_session.Dispose ();
 		}
 	}
 }

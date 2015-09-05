@@ -16,11 +16,11 @@ namespace example
 					var resp = manager.StartScan ("http://192.168.2.87/?searchquery=fdsa&action=search&x=11&y=15");
 
 					Console.WriteLine ("Running");
-					while (!manager.IsBusy().IsNil) {
+
+					while (!manager.IsBusy ().IsNil ) {
 						Thread.Sleep (10000);
 						Console.Write (".");
 					}
-
 
 					var trewq = manager.GetResults ();
 					foreach (var pair in trewq.AsDictionary())
