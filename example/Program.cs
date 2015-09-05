@@ -32,8 +32,6 @@ namespace example
 					}
 					DateTime end = DateTime.Now;
 					Console.WriteLine ("Finishing scan at " + end.ToLongTimeString () + ". Scan took " + ((end - start).ToString ()) + ".");
-
-					Console.WriteLine ("done");
 				}
 			}
 		}
