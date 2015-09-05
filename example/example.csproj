@@ -35,4 +35,14 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <ProjectReference Include="..\arachni-sharp.csproj">
+      <Project>{0BE63D84-10FC-4C38-BF72-3998D9CFC590}</Project>
+      <Name>arachni-sharp</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\msgpack-cli\src\MsgPack\MsgPack.csproj">
+      <Project>{5BCEC32E-990E-4DE5-945F-BD27326A7418}</Project>
+      <Name>MsgPack</Name>
+    </ProjectReference>
+  </ItemGroup>
 </Project>
