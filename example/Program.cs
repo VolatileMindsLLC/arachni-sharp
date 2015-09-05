@@ -20,6 +20,8 @@ namespace example
 
 					bool isRunning = manager.IsBusy ().AsBoolean ();
 					List<uint> issues = new List<uint> ();
+					DateTime start = DateTime.Now;
+					Console.WriteLine ("Starting scan at " + start.ToLongTimeString ());
 					while (isRunning) {
 						var progress = manager.GetProgress (issues);
 						foreach (MessagePackObject p in progress.AsDictionary()["issues"].AsEnumerable()) {
@@ -29,8 +31,9 @@ namespace example
 						}
 						Thread.Sleep (10000);
 						isRunning = manager.IsBusy ().AsBoolean ();
-
 					}
+					DateTime end = DateTime.Now;
+					Console.WriteLine ("Finishing scan at " + end.ToLongTimeString () + ". Scan took " + ((end - start).ToString ()) + ".");
 
 					Console.WriteLine ("done");
 				}
